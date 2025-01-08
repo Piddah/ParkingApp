@@ -27,16 +27,62 @@ namespace ParkingApp.Endpoints
 
             group.MapGet("/{id}", (int id) =>
             {
-                var user = users.SingleOrDefault(user => user.Id == id);
+                var user = Datastore.Users.SingleOrDefault(user => user.Id == id);
 
-                return user is null ? Results.NotFound() : 
+                return user is null ? Results.NotFound($"User with id:{id} was not found.") : 
                                       Results.Ok(user);
 
             }).WithName(getUserEndpoint);
 
-          
+            group.MapGet("/{id}/account/cost", (int id) =>
+            {
+                var user = Datastore.Users.SingleOrDefault(x => x.Id == id);
+                if (user is null)
+                    return Results.NotFound("User not found.");
 
-            group.MapPost("/", (NewUserDto user) =>
+                user.Account.CalculateDebt();
+                return Results.Ok(user.Account.Debt);
+            });
+
+            group.MapGet("/{id}/cars/{numberPlate}/period", (int id, string numberPlate) =>
+            {
+                var user = Datastore.Users.SingleOrDefault(x => x.Id == id);
+                if (user is null)
+                    return Results.NotFound("User not found.");
+
+                var car = user.Cars.SingleOrDefault(x => x.Numberplate == numberPlate);
+                if (car is null)
+                    return Results.NotFound("Car not found.");
+
+                return Results.Ok(car.Period);
+            });
+
+            group.MapPost("/{id}/cars/{numberPlate}/period", (int id, NewPeriodDto newPeriod) =>
+            {
+                var user = Datastore.Users.SingleOrDefault(x => x.Id == id);
+                if (user is null)
+                    return Results.NotFound("User not found.");
+                
+                var car = user.Cars.SingleOrDefault(x => x.Numberplate == newPeriod.Car.Numberplate);
+                if (car is null)
+                    return Results.NotFound("Car not found.");
+
+                var period = new Period(car);
+                car.StartPeriod(period);
+                return Results.CreatedAtRoute("Get Period", new { id = period.Id }, period);
+            });
+
+            group.MapGet("/{id}/cars/{numberPlate}", (int id, string numberPlate) =>
+            {
+                var user = Datastore.Users.SingleOrDefault(x => x.Id == id);
+                if (user is null)
+                    return Results.NotFound($"User not found.");
+
+                var car = user.Cars.SingleOrDefault(x => x.Numberplate == numberPlate);
+                return car is null ? Results.NotFound("Car not found.") : Results.Ok(car);
+            });
+
+        group.MapPost("/", (NewUserDto user) =>
             {
                 User newUser = new User(
                     user.Firstname,
@@ -46,7 +92,7 @@ namespace ParkingApp.Endpoints
                     user.Cars.Select(numberPlate => new Car(numberPlate)).ToList()
                     );
 
-                users.Add(newUser);
+                Datastore.Users.Add(newUser);
                 return Results.CreatedAtRoute(getUserEndpoint, new {id = newUser.Id}, newUser);
             });
 

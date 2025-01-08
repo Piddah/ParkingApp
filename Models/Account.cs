@@ -6,7 +6,6 @@ namespace ParkingApp.Models
     {
         int NextId = 1;
         public int Id { get; private set; }
-        //public User User { get; private set; }
         public double Debt { get; private set; } = 0;
         public ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
 

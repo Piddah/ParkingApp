@@ -17,7 +17,7 @@ app.UseHttpsRedirection();
 
 app.MapUserEndpoints();
 //app.MapCarEndpoints();
-app.MapPeriodEndpoints();
+//app.MapPeriodEndpoints();
 
 app.Run();
 

@@ -28,6 +28,10 @@ namespace ParkingApp.Endpoints
 
             group.MapPost("/", (NewPeriodDto startPeriod) =>
             {
+                var car = Datastore.Cars.SingleOrDefault(x => x.Numberplate == startPeriod.Car.Numberplate);
+                
+                if (car is null) 
+                    return Results.NotFound("Car not found.");
                 var newPeriod = new Period(startPeriod.Car);
                 Datastore.Periods.Add(newPeriod);
                 return Results.Ok(newPeriod);

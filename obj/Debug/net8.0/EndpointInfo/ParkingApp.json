@@ -101,45 +101,7 @@
         }
       }
     },
-    "/periods/{id}": {
-      "post": {
-        "tags": [
-          "ParkingApp"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/EndPeriodDto"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HttpValidationProblemDetails"
-                }
-              }
-            }
-          }
-        }
-      },
+    "/users/{id}/account/cost": {
       "get": {
         "tags": [
           "ParkingApp"
@@ -162,10 +124,57 @@
         }
       }
     },
-    "/periods": {
+    "/users/{id}/cars/{numberPlate}/period": {
+      "get": {
+        "tags": [
+          "ParkingApp"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "numberPlate",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpValidationProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
       "post": {
         "tags": [
           "ParkingApp"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
         ],
         "requestBody": {
           "content": {
@@ -177,6 +186,44 @@
           },
           "required": true
         },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpValidationProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}/cars/{numberPlate}": {
+      "get": {
+        "tags": [
+          "ParkingApp"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "numberPlate",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -221,22 +268,16 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "string",
-            "format": "uuid",
+            "type": "integer",
+            "format": "int32",
             "readOnly": true
           },
           "numberplate": {
             "type": "string",
             "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "EndPeriodDto": {
-        "type": "object",
-        "properties": {
-          "car": {
-            "$ref": "#/components/schemas/Car"
+          },
+          "period": {
+            "$ref": "#/components/schemas/Period"
           }
         },
         "additionalProperties": false
@@ -312,6 +353,41 @@
               "type": "string"
             },
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Period": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "car": {
+            "$ref": "#/components/schemas/Car"
+          },
+          "rateDaytime": {
+            "type": "number",
+            "format": "double",
+            "readOnly": true
+          },
+          "rateRestOfTime": {
+            "type": "number",
+            "format": "double",
+            "readOnly": true
+          },
+          "startTime": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "endTime": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "readOnly": true
           }
         },
         "additionalProperties": false

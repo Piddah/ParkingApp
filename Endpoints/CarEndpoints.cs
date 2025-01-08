@@ -14,19 +14,6 @@ namespace ParkingApp.Endpoints
 
             group.MapGet("/", () => Datastore.Cars);
 
-            group.MapGet("/{id}", (int id) =>
-            {
-                var car = Datastore.Users.Find(x => x.Id == id);
-                return car is null ? Results.NotFound() : Results.Ok(car);
-            }).WithName(getCar);
-
-            group.MapPost("/", (User user, NewCarDto car) =>
-            {
-                var newCar = new Car(car.Numberplate);
-
-                user.AddCar(newCar);
-                return Results.CreatedAtRoute(getCar,new {id = newCar.Id}, newCar );
-            });
 
             return group;
         }

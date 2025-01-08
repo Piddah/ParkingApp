@@ -17,12 +17,16 @@ namespace ParkingApp.Models
         {
             Id = NextId++;
             Car = car;
-            StartTime = DateTime.Now;
         }
 
         public void EndPeriod()
         {
             EndTime = DateTime.Now;
+        }
+
+        public void StartPeriod()
+        {
+            StartTime = DateTime.Now;
         }
 
         public string GetCurrentPeriod()
