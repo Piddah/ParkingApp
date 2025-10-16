@@ -1,0 +1,21 @@
+
+GET http://localhost:5093/users
+
+###
+
+POST http://localhost:5093/users
+Content-Type: application/json
+
+{
+    "firstName": "Nisse",
+    "lastName": "Larsson",
+    "password": "Password",
+    "email": "nisse@mail.com"
+    "cars": [
+        {
+            "NumberPlate": "ABC123"
+        }
+    ]
+}
+
+###
