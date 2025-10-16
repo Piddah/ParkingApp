@@ -1,0 +1,21 @@
+.find-page {
+    width: 100vw; 
+    text-align: center;
+    margin: 0; 
+    padding: 0; 
+}
+
+.map-container {
+    width: 100%; 
+    height: 80%;
+    margin: 0 auto; 
+    padding: 0; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+}
+
+.map {
+    width: 90%; 
+    height: 100%; 
+}
